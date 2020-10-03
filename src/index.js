@@ -15,11 +15,12 @@ class RenderComponent extends HTMLElement {
     this.onUpdate();
   }
 
-  update() {}
+  update(elapsed) {}
 
-  onUpdate() {
-    this.update();
-    this.#stop || requestAnimationFrame(() => this.onUpdate());
+  onUpdate(timestamp) {
+    this.update(timestamp);
+    this.#stop ||
+      requestAnimationFrame((timestamp) => this.onUpdate(timestamp));
   }
 
   disconnectedCallback() {
@@ -35,13 +36,20 @@ class CleanupComponent extends RenderComponent {
     this.style.height = "50px";
   }
 
-  update() {
-    console.log(this.timer);
-    this.timer--;
-    if (this.timer <= 0) {
-      this.timer = 200;
+  update(timestamp) {
+    if (this.start === undefined) {
+      this.start = timestamp;
     }
-    this.style.width = this.timer + "px";
+    const elapsed = timestamp - this.start;
+    console.log(this.timer + " " + elapsed);
+    if (elapsed > 50) {
+      this.start = timestamp;
+      this.timer--;
+      if (this.timer <= 0) {
+        this.timer = 200;
+      }
+      this.style.width = this.timer + "px";
+    }
   }
 }
 
