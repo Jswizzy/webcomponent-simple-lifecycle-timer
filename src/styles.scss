@@ -1,0 +1,14 @@
+$primary-color: white;
+$bg: black;
+h1 {
+  color: $primary-color;
+  background-color: $bg;
+}
+
+my-custom-tag {
+  background-color: blue;
+  padding: 20px;
+  display: inline-block;
+  color: white;
+}
+
